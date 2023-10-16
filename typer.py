@@ -4,14 +4,10 @@ FINAL FANTASY VII AI Battles
 
 Check out the README for more information
 '''
-
-import pytesseract
-import PIL.Image
-#import cv2
 import keyboard
 import pyautogui
 import time
-import random
+from random import randint
 
 def Attack():
     pyautogui.keyDown('i')
@@ -56,28 +52,28 @@ time.sleep(3)
 
 while(keyboard.is_pressed('q') == False):
 
-    choice = random.randint(0,100)
+    choice = randint(0,100)
     time.sleep(3)
 
     print(choice)
     
-    if ((choice >= 0) & (choice <= 50)):
+    if ((choice >= 0) and (choice <= 50)):
         Attack()
         print('Attack')
 
-    elif ((choice >= 51) & (choice <= 80)):
+    elif ((choice >= 51) and (choice <= 80)):
         Magic()
         print('Magic')
 
-    elif ((choice >= 81) & (choice <= 90)):
+    elif ((choice >= 81) and (choice <= 90)):
         Summon()
         print('Summon')
 
-    elif ((choice >= 91) & (choice <= 93)):
+    elif ((choice >= 91) and (choice <= 93)):
         Item()
         print('Item')
 
-    elif ((choice >= 94) & (choice <= 100)):
+    elif ((choice >= 94) and (choice <= 100)):
         eSkill()
         print('Enemy Skill')
 
