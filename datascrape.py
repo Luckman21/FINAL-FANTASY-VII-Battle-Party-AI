@@ -93,6 +93,32 @@ def HP():
     
     return values
 
+def getHPstate(charNum):
+    """
+    Return the current HP state based on HP colour
+        Red - 0 HP / KO'ed (returns 0)
+        Yellow - Critical HP (below 25%) (returns 1)
+        White - Healthy (returns 2 [default])
+    """
+
+    '''
+    if (red):
+        return 0
+    elif (yellow):
+        return 1
+    else:
+        return 2
+    '''    
+    return 2
+
+def getHPvalues(nums, dens):
+    """
+    Parses through text blob to seperate numerator and denominator values.
+    Returns an array containing 2 internal arrays; numerators and denominators.
+    """
+    hpArray = [nums, dens]
+    return hpArray
+
 def hpCorrect(values):
     """
     pytesseract's ability to accurately read the in game font is decent, but not perfect.
@@ -125,6 +151,9 @@ def hpCorrect(values):
     #Numerator and Denominator for HP values
     num = ""
     den = ""
+    nums = []
+    dens = []
+    newValues = ""
 
     #Splice string to distinguish numerator and denomintator values from a single string
     for i in range (0, num_of_chars):
@@ -137,17 +166,67 @@ def hpCorrect(values):
 
     #print text as compiler sees it (includes \n, \t, etc.)
     #print(repr(values))
+        num = int(num)
+        den = int(den)
 
     #Check for any impossible cases
         #Current HP > Max HP
-        #KO'ed status when HP > 0
-        #Yellow health but HP is above yellow threshold
-        #Alive but HP = 0
+        if (num > den):
+            
+            #KO'ed status when HP > 0
+            if (getHPstate(i) == 0): #Set HP to 0 if HP bar is red
+                num = 0
 
+            #Yellow health but HP is above yellow threshold
+            elif (getHPstate(i) == 1): #Set HP to 25% of max health fo HP bar is yellow
+                num = den * 0.25
+            else:
+                #Reduce HP until current HP < Max HP
+                '''
+                    This solution is not ideal, there may be times where the HP read and the correction made are innacurate
+                    For example:
+                        Actual current HP: 2564 / 3561
+                        Read current HP: 3564 / 3561
+
+                        Innacuracy difference: 3564 - 2564 = 1000
+                        Current solution difference: 3564 - 3561 = 3
+                        
+                        Only 3 points in total will be subtracted from the total HP, the AI may be incorrectly rewarded for
+                        increasing it's health state when not performing an action that supports healing.  There are more 
+                        instances like this, but this current solution will prevent impossible cases to the best of it's ability.
+                '''
+                while (num > den):
+                    if ((num - den) >= 1000):
+                        num -= 1000
+                    elif ((num - den) >= 100):
+                        num -= 100
+                    elif ((num - den) >= 10):
+                        num -= 10
+                    elif ((num - den >= 1)):
+                        num -= 1
+
+        #If HP is above threasholds when actually critial / KO'ed
+        elif (getHPstate(i) != 2):
+            if (getHPstate(i) == 0):
+                num = 0
+            elif (getHPstate(i) == 1):
+                if (num > den * 0.25):
+                    num = den * 0.25
+        
+        #Healthy but HP is below the healthy threshold
+        elif (getHPstate(i) == 2):
+            if (num <= (den * 0.25)):
+                num = den * 0.5
+
+        nums.append(str(num))
+        dens.append(str(den))
+                
     #Copy correction changes by manipulating values string indexes
+    for i in range (0, num_of_chars):
+        newValues += nums[i] + "/" + dens[i] + "\n"
 
     #Return the corrected values as a string
-    return values
+    return newValues
     
 def MP():
     """
@@ -166,6 +245,5 @@ def MP():
 time.sleep(2.5)
 
 #printer(party())
-#printer(HP())
+printer(HP())
 #printer(MP())
-HP()
