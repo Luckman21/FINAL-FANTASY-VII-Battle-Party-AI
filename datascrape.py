@@ -20,7 +20,7 @@ def printer(text):
 
     name = ''
 
-    print('\n ___________________')
+    print('.___________.')
     for i in text:
         if (i != '\n'):
             name += i
@@ -35,10 +35,10 @@ def printer(text):
             continue
         
         else:
-            print('| ' + name)
+            print('| ' + name + (12 - (len(name) + 2))*' ' + '|')
             name = ''
-        
-    print(' ‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾')
+
+    print('˙‾‾‾‾‾‾‾‾‾‾‾˙')
 
 def party():
     """
@@ -82,6 +82,7 @@ def HP():
     #Left, Up, Right, Down
     pyautogui.keyDown('|')
     name_window = pyscreenshot.grab(bbox=(1080, 1140, 1500, 1450))
+    name_window.save('hp.png')
     pyautogui.keyUp('|')
     values = pytesseract.image_to_string(name_window, config=myconfig)
     #name_window.show()
@@ -101,20 +102,33 @@ def getHPstate(charNum):
         White - Healthy (returns 2 [default])
     """
 
-    '''
-    if (red):
-        return 0
-    elif (yellow):
-        return 1
-    else:
-        return 2
-    '''    
+    img = PIL.Image.open('hp.png')
+    #crop_img = (0, 0, 420, 310) #Default HP image size
+    max_colours = img.size[0] * img.size[1] #Max num of colours is num of pixels in the image
+
+    if (charNum == 1):
+        crop_img = (0, 16, 420, 72)
+
+    elif (charNum == 2):
+        crop_img = (0, 122, 420, 178)
+
+    elif (charNum == 3):
+        crop_img = (0, 228, 420, 284)
+
+    img = img.crop(crop_img) 
+
+    for i in (img.getcolors(max_colours)):
+        if i[1] == (189, 0, 0): #Red health bar = KOed
+            return 0
+        elif i[1] == (230, 230, 0): #Yellow health bar = Critical Health
+            return 1
     return 2
 
 def getHPvalues(nums, dens):
     """
     Parses through text blob to seperate numerator and denominator values.
     Returns an array containing 2 internal arrays; numerators and denominators.
+    (Not fully implemented)
     """
     hpArray = [nums, dens]
     return hpArray
@@ -174,12 +188,12 @@ def hpCorrect(values):
         if (num > den):
             
             #KO'ed status when HP > 0
-            if (getHPstate(i) == 0): #Set HP to 0 if HP bar is red
+            if (getHPstate(i+1) == 0): #Set HP to 0 if HP bar is red
                 num = 0
 
             #Yellow health but HP is above yellow threshold
-            elif (getHPstate(i) == 1): #Set HP to 25% of max health fo HP bar is yellow
-                num = den * 0.25
+            elif (getHPstate(i+1) == 1): #Set HP to 25% of max health fo HP bar is yellow
+                num = int(den * 0.25)
             else:
                 #Reduce HP until current HP < Max HP
                 '''
@@ -206,17 +220,17 @@ def hpCorrect(values):
                         num -= 1
 
         #If HP is above threasholds when actually critial / KO'ed
-        elif (getHPstate(i) != 2):
-            if (getHPstate(i) == 0):
+        elif (getHPstate(i+1) != 2):
+            if (getHPstate(i+1) == 0):
                 num = 0
-            elif (getHPstate(i) == 1):
+            elif (getHPstate(i+1) == 1):
                 if (num > den * 0.25):
-                    num = den * 0.25
+                    num = int(den * 0.25)
         
         #Healthy but HP is below the healthy threshold
-        elif (getHPstate(i) == 2):
+        elif (getHPstate(i+1) == 2):
             if (num <= (den * 0.25)):
-                num = den * 0.5
+                num = int(den * 0.5)
 
         nums.append(str(num))
         dens.append(str(den))
@@ -244,6 +258,6 @@ def MP():
 
 time.sleep(2.5)
 
-#printer(party())
+printer(party())
 printer(HP())
-#printer(MP())
+printer(MP())
