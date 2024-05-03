@@ -7,11 +7,14 @@ Check out the README for more information
 
 #Useful resource for this part https://youtu.be/PY_N1XdFp4w?si=VLq-9ABWQJEfXxbV
 
+import pymem
 import PIL
 import pyautogui
 import pytesseract
 import pyscreenshot
 import time
+
+game = pymem.Pymem("ff7_en.exe")
 
 def printer(text):
     """
@@ -74,173 +77,23 @@ def party():
 
 def HP():
     """
-    Returns a string of HP values.
+    Returns an array of current and max HP values.
     """
+    #Read Party HP Values
+    p1_hp = game.base_address + 0x005AB108
+    p1_hp_max = p1_hp + 0x00000004
+    p2_hp = game.base_address + 0x005AB170
+    p2_hp_max = p2_hp + 0x00000004
+    p3_hp = game.base_address + 0x005AB1D8
+    p3_hp_max = p3_hp + 0x00000004
 
-    myconfig = r"--psm 4 -c tessedit_char_whitelist=0123456789/"
+    #Store Party HP to an array for iteration
+    party_hp = [[p1_hp, p1_hp_max],[p2_hp, p2_hp_max],[p3_hp, p3_hp_max]]
 
-    #Left, Up, Right, Down
-    pyautogui.keyDown('|')
-    name_window = pyscreenshot.grab(bbox=(1080, 1140, 1500, 1450))
-    name_window.save('hp.png')
-    pyautogui.keyUp('|')
-    values = pytesseract.image_to_string(name_window, config=myconfig)
-    #name_window.show()
+    for i in range (0, len(party_hp)):
+        party_hp[i] = [game.read_int(party_hp[i][0]), game.read_int(party_hp[i][1])]
 
-    pixel = name_window.load()
-    #print(pixel[100,100])
-
-    values = hpCorrect(values)
-    
-    return values
-
-def getHPstate(charNum):
-    """
-    Return the current HP state based on HP colour
-        Red - 0 HP / KO'ed (returns 0)
-        Yellow - Critical HP (below 25%) (returns 1)
-        White - Healthy (returns 2 [default])
-    """
-
-    img = PIL.Image.open('hp.png')
-    #crop_img = (0, 0, 420, 310) #Default HP image size
-    max_colours = img.size[0] * img.size[1] #Max num of colours is num of pixels in the image
-
-    if (charNum == 1):
-        crop_img = (0, 16, 420, 72)
-
-    elif (charNum == 2):
-        crop_img = (0, 122, 420, 178)
-
-    elif (charNum == 3):
-        crop_img = (0, 228, 420, 284)
-
-    img = img.crop(crop_img) 
-
-    for i in (img.getcolors(max_colours)):
-        if i[1] == (189, 0, 0): #Red health bar = KOed
-            return 0
-        elif i[1] == (230, 230, 0): #Yellow health bar = Critical Health
-            return 1
-    return 2
-
-def getHPvalues(nums, dens):
-    """
-    Parses through text blob to seperate numerator and denominator values.
-    Returns an array containing 2 internal arrays; numerators and denominators.
-    (Not fully implemented)
-    """
-    hpArray = [nums, dens]
-    return hpArray
-
-def hpCorrect(values):
-    """
-    pytesseract's ability to accurately read the in game font is decent, but not perfect.
-    Until the model is trained on this font, the current implementation of this method will
-    serve to "correct" the mistakes as best as possible.  The values still may not be accurate,
-    but the purpose is to prevent impossible cases (like current HP > total HP, KO'ed status 
-    when HP > 0, etc.).
-
-    Returns the corrected values.
-    """
-
-    #Count the number of party members in battle (min 1, max 3)
-    
-    num_of_chars = 1
-
-    for i in values:
-        if (i == '\n'):
-            if (num_of_chars >= 3):
-                continue
-            else:
-                num_of_chars += 1
-
-    #///Correct values///
-
-    #Index values for each HP line
-    startLine = 0
-    slash = 0
-    endLine = -1
-
-    #Numerator and Denominator for HP values
-    num = ""
-    den = ""
-    nums = []
-    dens = []
-    newValues = ""
-
-    #Splice string to distinguish numerator and denomintator values from a single string
-    for i in range (0, num_of_chars):
-        startLine = endLine + 1
-        endLine = startLine + values[startLine:].find('\n')
-        slash = startLine + values[startLine:].find('/')
-
-        num = values[startLine:slash]
-        den = values[slash+1:endLine]
-
-    #print text as compiler sees it (includes \n, \t, etc.)
-    #print(repr(values))
-        num = int(num)
-        den = int(den)
-
-    #Check for any impossible cases
-        #Current HP > Max HP
-        if (num > den):
-            
-            #KO'ed status when HP > 0
-            if (getHPstate(i+1) == 0): #Set HP to 0 if HP bar is red
-                num = 0
-
-            #Yellow health but HP is above yellow threshold
-            elif (getHPstate(i+1) == 1): #Set HP to 25% of max health fo HP bar is yellow
-                num = int(den * 0.25)
-            else:
-                #Reduce HP until current HP < Max HP
-                '''
-                    This solution is not ideal, there may be times where the HP read and the correction made are innacurate
-                    For example:
-                        Actual current HP: 2564 / 3561
-                        Read current HP: 3564 / 3561
-
-                        Innacuracy difference: 3564 - 2564 = 1000
-                        Current solution difference: 3564 - 3561 = 3
-                        
-                        Only 3 points in total will be subtracted from the total HP, the AI may be incorrectly rewarded for
-                        increasing it's health state when not performing an action that supports healing.  There are more 
-                        instances like this, but this current solution will prevent impossible cases to the best of it's ability.
-                '''
-                while (num > den):
-                    if ((num - den) >= 1000):
-                        num -= 1000
-                    elif ((num - den) >= 100):
-                        num -= 100
-                    elif ((num - den) >= 10):
-                        num -= 10
-                    elif ((num - den >= 1)):
-                        num -= 1
-
-        #If HP is above threasholds when actually critial / KO'ed
-        elif (getHPstate(i+1) != 2):
-            if (getHPstate(i+1) == 0):
-                num = 0
-            elif (getHPstate(i+1) == 1):
-                if (num > den * 0.25):
-                    num = int(den * 0.25)
-        
-        #Healthy but HP is below the healthy threshold
-        elif (getHPstate(i+1) == 2):
-            if (num <= (den * 0.25)):
-                num = int(den * 0.5)
-
-        nums.append(str(num))
-        dens.append(str(den))
-                
-    #Copy correction changes by manipulating values string indexes
-    for i in range (0, num_of_chars):
-        newValues += nums[i] + "/" + dens[i] + "\n"
-
-    #Return the corrected values as a string
-    return newValues
+    return party_hp
     
 def MP():
     """
@@ -256,8 +109,35 @@ def MP():
 
     return values
 
-time.sleep(2.5)
+def eHP():
+    """
+    Returns an array of current and max enemy HP values.
+    """
+    #Read Enemy HP Values
+    e1_hp = game.base_address + 0x005AB2A8
+    e1_hp_max = e1_hp + 0x00000004
+    e2_hp = game.base_address + 0x005AB310
+    e2_hp_max = e2_hp + 0x00000004
+    e3_hp = game.base_address + 0x005AB378
+    e3_hp_max = e3_hp + 0x00000004
+    e4_hp = game.base_address + 0x005AB3E0
+    e4_hp_max = e4_hp + 0x00000004
+    e5_hp = game.base_address + 0x005AB448
+    e5_hp_max = e5_hp + 0x00000004
+    e6_hp = game.base_address + 0x005AB4B0
+    e6_hp_max = e6_hp + 0x00000004
+    
+    #store Enemy HP to an array for iteration
+    enemy_hp = [[e1_hp, e1_hp_max],[e2_hp, e2_hp_max],[e3_hp, e3_hp_max],[e4_hp, e4_hp_max],[e5_hp, e5_hp_max],[e6_hp, e6_hp_max]]
 
-printer(party())
-printer(HP())
-printer(MP())
+    for i in range (0, len(enemy_hp)):
+        enemy_hp[i] = [game.read_int(enemy_hp[i][0]), game.read_int(enemy_hp[i][1])]
+
+    return enemy_hp
+
+def eMP(): #TODO: Implement
+    return "Not implmented"
+
+#printer(party())
+#printer(HP())
+#printer(MP())
