@@ -1,6 +1,11 @@
 Luckman21
 
-FINAL FANTASY VII AI Battles
+#FINAL FANTASY VII AI Battles 
+####*(W.I.P)*
+
+***
+
+###Purpose
 
 The purpose of this project is for fun and learning.  My goal is to make a functional AI that can make the right decisions during
 battles and (hopefully) complete a full run of the game.  This project implements the following skills I'll need to pull this off:
@@ -32,3 +37,39 @@ This way, the AI model can focus on battle strategy rather than figuring out how
 
 The AI model will be the biggest and most complex part of the project.  Choosing which model and implementing it will be challenging.
 I will update the README with more information when I have more information on the AI model I'm using and my implementation.
+
+***
+
+###Setup
+
+In order to set up this system, you will need the following:
+-[] A computer with Windows OS installed powerful enough to run FFVII and Python simlutaneously
+-[] A copy of FINAL FANTASY VII (Steam version) installed
+-[] Python 3.9.10 or newer (older versions may work but are not tested)
+    -[] The following libraries installed:
+        -[] pymem
+        -[] PIL
+        -[] pyautogui
+        -[] pytesseract
+        -[] pyscreenshot
+        -[] keyboard
+
+*More setup instructions will be provided when the project is closer to completion.*
+
+***
+
+###Resources
+
+Some helpful resources I found along the way!
+
+[Extract Text From Images in Python (OCR)](https://youtu.be/PY_N1XdFp4w?si=VLq-9ABWQJEfXxbV "YouTube Tutorial Link")
+[Writing GitHub README](https://medium.com/analytics-vidhya/writing-github-readme-e593f278a796 "Web Tutorial Link")
+
+***
+
+![GitHub all releases](https://img.shields.io/github/downloads/{luckman21}/{FINAL-FANTASY-VII-Battle-Party-AI}/total)
+![GitHub language count](https://img.shields.io/github/languages/count/{luckman21}/{FINAL-FANTASY-VII-Battle-Party-AI})
+![GitHub top language](https://img.shields.io/github/languages/top/{luckman21}/{FINAL-FANTASY-VII-Battle-Party-AI}?color=yellow)
+![Bitbucket open issues](https://img.shields.io/bitbucket/issues/{luckman21}/{FINAL-FANTASY-VII-Battle-Party-AI})
+![GitHub forks](https://img.shields.io/github/forks/{luckman21}/{FINAL-FANTASY-VII-Battle-Party-AI}?style=social)
+![GitHub Repo stars](https://img.shields.io/github/stars/{luckman21}/{FINAL-FANTASY-VII-Battle-Party-AI}?style=social)

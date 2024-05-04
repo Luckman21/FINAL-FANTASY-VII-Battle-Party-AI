@@ -6,7 +6,6 @@ Check out the README for more information
 '''
 import pyautogui
 import time
-from random import randint
 
 def select():
     """

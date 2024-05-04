@@ -12,7 +12,6 @@ import PIL
 import pyautogui
 import pytesseract
 import pyscreenshot
-import time
 
 game = pymem.Pymem("ff7_en.exe")
 

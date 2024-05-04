@@ -4,7 +4,6 @@ This file reads from memory addresses to access game values like health and stat
 '''
 
 import pymem
-import time
 
 game = pymem.Pymem("ff7_en.exe")
 
