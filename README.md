@@ -45,16 +45,16 @@ I will update the README with more information when I have more information on t
 ### Setup
 
 In order to set up this system, you will need the following:[^1]
--[] A computer with Windows OS installed powerful enough to run FFVII and Python simlutaneously
--[] A copy of FINAL FANTASY VII (Steam version) installed
--[] Python 3.9.10 or newer (older versions may work but are not tested)
-    -[] The following libraries installed:
-        -[] pymem
-        -[] PIL
-        -[] pyautogui
-        -[] pytesseract
-        -[] pyscreenshot
-        -[] keyboard
+-[ ] A computer with Windows OS installed powerful enough to run FFVII and Python simlutaneously
+-[ ] A copy of FINAL FANTASY VII (Steam version) installed
+-[ ] Python 3.9.10 or newer (older versions may work but are not tested)
+    -[ ] The following libraries installed:
+        -[ ] pymem
+        -[ ] PIL
+        -[ ] pyautogui
+        -[ ] pytesseract
+        -[ ] pyscreenshot
+        -[ ] keyboard
 
 [^1]: More setup instructions will be provided when the project is closer to completion.
 
