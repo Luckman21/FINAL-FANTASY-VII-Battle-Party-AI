@@ -1,6 +1,8 @@
 Luckman21
 
-# FINAL FANTASY VII AI Battles 
+# FINAL FANTASY VII Battle Party AI
+
+***
 
 > [!NOTE]
 > This project is still a W.I.P., not all features are implemented.
