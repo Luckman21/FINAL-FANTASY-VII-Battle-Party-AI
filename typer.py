@@ -4,10 +4,8 @@ FINAL FANTASY VII AI Battles
 
 Check out the README for more information
 '''
-import keyboard
 import pyautogui
 import time
-from datascrape import *
 from random import randint
 
 def select():
