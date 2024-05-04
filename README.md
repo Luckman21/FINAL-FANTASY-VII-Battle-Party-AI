@@ -1,11 +1,13 @@
 Luckman21
 
-#FINAL FANTASY VII AI Battles 
-####*(W.I.P)*
+# FINAL FANTASY VII AI Battles 
+
+> [!NOTE]
+> This project is still a W.I.P., not all features are implemented.
 
 ***
 
-###Purpose
+### Purpose
 
 The purpose of this project is for fun and learning.  My goal is to make a functional AI that can make the right decisions during
 battles and (hopefully) complete a full run of the game.  This project implements the following skills I'll need to pull this off:
@@ -40,9 +42,9 @@ I will update the README with more information when I have more information on t
 
 ***
 
-###Setup
+### Setup
 
-In order to set up this system, you will need the following:
+In order to set up this system, you will need the following:[^1]
 -[] A computer with Windows OS installed powerful enough to run FFVII and Python simlutaneously
 -[] A copy of FINAL FANTASY VII (Steam version) installed
 -[] Python 3.9.10 or newer (older versions may work but are not tested)
@@ -54,16 +56,17 @@ In order to set up this system, you will need the following:
         -[] pyscreenshot
         -[] keyboard
 
-*More setup instructions will be provided when the project is closer to completion.*
+[^1]: More setup instructions will be provided when the project is closer to completion.
 
 ***
 
-###Resources
+### Resources
 
 Some helpful resources I found along the way!
 
-[Extract Text From Images in Python (OCR)](https://youtu.be/PY_N1XdFp4w?si=VLq-9ABWQJEfXxbV "YouTube Tutorial Link")
-[Writing GitHub README](https://medium.com/analytics-vidhya/writing-github-readme-e593f278a796 "Web Tutorial Link")
+- [Extract Text From Images in Python (OCR)](https://youtu.be/PY_N1XdFp4w?si=VLq-9ABWQJEfXxbV "YouTube Tutorial Link")
+- [Basic Writing and Formatting Syntax for GitHub README](https://docs.github.com/en/get-started/writing-on-github/getting-started-with-writing-and-formatting-on-github/basic-writing-and-formatting-syntax, "Link to GitHub Guide")
+- [Writing GitHub README](https://medium.com/analytics-vidhya/writing-github-readme-e593f278a796 "Web Tutorial Link")
 
 ***
 
