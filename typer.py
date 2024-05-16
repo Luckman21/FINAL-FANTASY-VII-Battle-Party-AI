@@ -6,13 +6,13 @@ Check out the README for more information
 '''
 import pyautogui
 import time
+from menu_elements import *
 
 def select():
     """
     Defines the "OK" button press.
     """
     pyautogui.keyDown('i')
-    time.sleep(0.1)
     pyautogui.keyUp('i')
     time.sleep(0.1)
 
@@ -63,26 +63,42 @@ def Magic(): #TODO: Select different magic spells.  Spells will be ordered depen
     select()
     Attack()
 
-def Summon(): #TODO: Select a summon based on the current equipped list.  Currently summons are organized in the menu by name, each has their own index position.
+def Summon(summon): #TODO: Select a summon based on the current equipped list.
     """
     Defines the macro for Summon.  Currently selects the topmost Summon in the menu.
     """
     dArrow()
-    Magic()
+    dArrow()
+    select()
 
-def Item(): #TODO: Select different items, give each an index ID to choose from the list.
+    #Scroll down until we reach the desired Summon
+    for i in range (0, summon):
+        dArrow()
+    
+    Attack()
+
+def Item(item): #TODO: Update the item array so that items are listed in the correct indexes.
     """
-    Defines the macro for Item.  Currently selects the topmost Item in the menu.
+    Defines the macro for Item.  Selects an item based on the item's current specified index position.
     """
     dArrow()
-    Summon()
+    Summon(item)
 
-def eSkill(): #TODO: Select different enemy skills, each is given a fixed index like summons.  Create a list to select the correct position.
+def eSkill(skill): #TODO: Create a list to select the correct position.
     """
-    Defines the macro for E.Skill.  Currently selects the topmost E.Skill in the menu.
+    Defines the macro for E.Skill.  Selects an Enemy Skill based on the specified index position.
     """
     rArrow()
     select()
+    
+    #The Enemy Skill menu is broken into 2 columns.  This logic will determine if the skill is found on the left or right column.
+    if (skill % 2 == 1):
+        rArrow()
+
+    #Scroll down until we reach the desired skill
+    for i in range (0, int(skill / 2)):
+        dArrow()
+    
     Attack()
 
 #Sleep for 3 seconds
