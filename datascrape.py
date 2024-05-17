@@ -49,6 +49,33 @@ def printer(text): #TODO: Depricate
 
     print('˙‾‾‾‾‾‾‾‾‾‾‾˙')
 
+def name_format(text):
+    """
+    Based on the printer function, formats text into seperate words / names by identifying newlines.
+    """
+
+    names = []
+    name = ''
+
+    for i in text:
+        if (i != '\n'):
+            name += i
+
+        elif (name == '\n'):
+            name = ''
+
+        elif (name == '_'):
+            name = ' '
+
+        elif (name == ''):
+            continue
+        
+        else:
+            names.append(name)
+            name = ''
+    
+    return names
+
 def party(): #TODO: Find values in memory that hold these values and read them
     """
     Returns a string containing party member names.  Takes 2 screenshots (in case the name gets "greyed out"
@@ -74,12 +101,18 @@ def party(): #TODO: Find values in memory that hold these values and read them
     #inverted_image2.save('test2.png')
     text2 = pytesseract.image_to_string(inverted_image2, config=myconfig)
 
+    #Compare which text is longer; this will usually result in all names being included (greyed out names are not read as well and may be missed)
     if (len(text1) >= len(text2)):
         names = text1
     else:
         names = text2
 
-    return names
+    #Seperate names from text, put in an array
+    names = name_format(names)
+
+    #Add party names to the hashtable
+    for i in range (0, len(names)):
+        party_names.update({i+1:names[i]})
 
 def HP():
     """
