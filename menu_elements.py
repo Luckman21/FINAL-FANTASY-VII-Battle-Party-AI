@@ -5,6 +5,10 @@ FINAL FANTASY VII AI Battles
 Check out the README for more information
 """
 
+#Python Dict (Hashtable) to return the position (Top / Leader = 1, Middle = 2, Bottom = 3) of the Party Member based on their name
+party_names = {
+}
+
 #Python Dict (Hashtable) to return the number of down arrow presses to select the summon in the Summon menu.
 summons = {
     "Choco/Mog":0,

@@ -36,6 +36,13 @@ class KillSwitch(threading.Thread):
         #quit()
         os._exit(1)
 
+def Player(name): #TODO: Implement
+    party_names.get(name)
+
+    #Remove party member from the queue
+    #Load character data
+    #Perform action
+
 #Create thread and initialize it
 alive = KillSwitch("FFVII Battle AI", 1000)    
 alive.start()

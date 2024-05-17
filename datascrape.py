@@ -12,8 +12,15 @@ import PIL
 import pyautogui
 import pytesseract
 import pyscreenshot
+import time
+from menu_elements import *
 
 game = pymem.Pymem("ff7_en.exe")
+
+#Creates the Queue for characters to take control of the controls
+atb_queue = []
+atb_queue_maxsize = 3
+atb_state = True
 
 def printer(text): #TODO: Depricate
     """
@@ -136,6 +143,66 @@ def eHP():
 
 def eMP(): #TODO: Implement
     return "Not implmented"
+
+def ATB():
+    """
+    Manages the ATB Queue to queue party member actions.
+    """
+    while True:
+
+        time.sleep(0.1)
+
+        if (len(atb_queue) == atb_queue_maxsize):
+            continue
+
+        elif (len(atb_queue) == 0):
+            if (atb1()):
+                atb_queue.append(party_names.get(1))
+            elif (atb2()):
+                atb_queue.append(party_names.get(2))
+            elif (atb3()):
+                atb_queue.append(party_names.get(3))
+
+        elif (len(atb_queue) < atb_queue_maxsize):
+            
+            #If Member 1 is not in the ATB Queue
+            try:
+                atb_queue.index(party_names.get(1))
+            except ValueError:
+                if (atb1()):
+                    atb_queue.append(party_names.get(1))
+
+            #If Member 2 is not in the ATB Queue
+            try:
+                atb_queue.index(party_names.get(2))
+            except ValueError:
+                if (atb2()):
+                    atb_queue.append(party_names.get(2))
+
+            #If Member 3 is not in the ATB Queue
+            try:
+                atb_queue.index(party_names.get(3))
+            except ValueError:
+                if (atb3()):
+                    atb_queue.append(party_names.get(3))
+
+def atb1(): #TODO: Implement
+    """
+    Checks if Party Member 1 is ready to select an action.  Returns false otherwise.
+    """
+    return False
+
+def atb2(): #TODO: Implement
+    """
+    Checks if Party Member 2 is ready to select an action.  Returns false otherwise.
+    """
+    return False
+
+def atb3(): #TODO: Implement
+    """
+    Checks if Party Member 3 is ready to select an action.  Returns false otherwise.
+    """
+    return False
 
 #printer(party())
 #printer(HP())
