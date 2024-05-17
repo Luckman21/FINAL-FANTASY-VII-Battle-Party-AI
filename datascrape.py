@@ -15,7 +15,7 @@ import pyscreenshot
 
 game = pymem.Pymem("ff7_en.exe")
 
-def printer(text):
+def printer(text): #TODO: Depricate
     """
     Prints out information fed to the function in a box format.
     """
@@ -42,7 +42,7 @@ def printer(text):
 
     print('˙‾‾‾‾‾‾‾‾‾‾‾˙')
 
-def party():
+def party(): #TODO: Find values in memory that hold these values and read them
     """
     Returns a string containing party member names.  Takes 2 screenshots (in case the name gets "greyed out"
     by UI), compares which string is longer (theoretically the longer string should be the one with all 3 names)
@@ -94,7 +94,7 @@ def HP():
 
     return party_hp
     
-def MP():
+def MP(): #TODO: Find values in memory that hold these values and read them
     """
     Returns a string of MP values.
     """

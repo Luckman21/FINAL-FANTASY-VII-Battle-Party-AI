@@ -3,6 +3,8 @@
 This file reads from memory addresses to access game values like health and stats.
 '''
 
+#TODO: Remove file from project
+
 import pymem
 
 game = pymem.Pymem("ff7_en.exe")
