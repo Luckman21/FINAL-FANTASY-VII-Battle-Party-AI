@@ -17,11 +17,6 @@ from menu_elements import *
 
 game = pymem.Pymem("ff7_en.exe")
 
-#Creates the Queue for characters to take control of the controls
-atb_queue = []
-atb_queue_maxsize = 3
-atb_state = True
-
 def printer(text): #TODO: Depricate
     """
     Prints out information fed to the function in a box format.
@@ -142,9 +137,9 @@ def MP(): #TODO: Find values in memory that hold these values and read them
     myconfig = r"--psm 11 -c tessedit_char_whitelist=0123456789"
 
     #Left, Up, Right, Down
-    name_window = pyscreenshot.grab(bbox=(1520, 1150, 1719, 1435))
+    name_window = pyscreenshot.grab(bbox=(1520, 1180, 1719, 1470))
     values = pytesseract.image_to_string(name_window, config=myconfig)
-    #name_window.show() #Show screenshot being taken
+    name_window.show() #Show screenshot being taken
 
     return values
 
@@ -177,7 +172,7 @@ def eHP():
 def eMP(): #TODO: Implement
     return "Not implmented"
 
-def ATB():
+def ATB(atb_queue, atb_queue_maxsize):
     """
     Manages the ATB Queue to queue party member actions.
     """
@@ -189,11 +184,11 @@ def ATB():
             continue
 
         elif (len(atb_queue) == 0):
-            if (atb1()):
+            if (atb_check(1)):
                 atb_queue.append(party_names.get(1))
-            elif (atb2()):
+            elif (atb_check(2)):
                 atb_queue.append(party_names.get(2))
-            elif (atb3()):
+            elif (atb_check(3)):
                 atb_queue.append(party_names.get(3))
 
         elif (len(atb_queue) < atb_queue_maxsize):
@@ -202,40 +197,64 @@ def ATB():
             try:
                 atb_queue.index(party_names.get(1))
             except ValueError:
-                if (atb1()):
+                if (atb_check(1)):
                     atb_queue.append(party_names.get(1))
 
             #If Member 2 is not in the ATB Queue
             try:
                 atb_queue.index(party_names.get(2))
             except ValueError:
-                if (atb2()):
+                if (atb_check(2)):
                     atb_queue.append(party_names.get(2))
 
             #If Member 3 is not in the ATB Queue
             try:
                 atb_queue.index(party_names.get(3))
             except ValueError:
-                if (atb3()):
+                if (atb_check(3)):
                     atb_queue.append(party_names.get(3))
 
-def atb1(): #TODO: Implement
+def atb_check(position): #TODO: Implement
     """
-    Checks if Party Member 1 is ready to select an action.  Returns false otherwise.
+    Checks if Party Member n is ready to select an action.  Returns false otherwise.
+    n is represented by "position", where the character is in the Top / Leader, Middle or Bottom spot of the field.
     """
-    return False
 
-def atb2(): #TODO: Implement
-    """
-    Checks if Party Member 2 is ready to select an action.  Returns false otherwise.
-    """
-    return False
+    if (position == 1):
+        return True
 
-def atb3(): #TODO: Implement
+    elif (position == 2):
+        return True
+    
+    elif (position == 3):
+        return True
+
+    return False
     """
     Checks if Party Member 3 is ready to select an action.  Returns false otherwise.
     """
     return False
+
+def atb_state():
+    """
+    Returns the current ATB State.  If TIME, return True.
+    Otherwise (WAIT), return False.
+    """
+
+    myconfig = r"--psm 11 -c tessedit_char_whitelist=TIMEWA"
+
+    #Left, Up, Right, Down
+    name_window = pyscreenshot.grab(bbox=(1990, 1148, 2150, 1190))
+    state = pytesseract.image_to_string(name_window, config=myconfig)
+    #name_window.show() #Show screenshot being taken
+
+    #print(state)
+
+    if (state == "TIME"):
+        return True
+    
+    else:
+        return False
 
 #printer(party())
 #printer(HP())

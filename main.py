@@ -47,16 +47,22 @@ def Player(name): #TODO: Implement
 alive = KillSwitch("FFVII Battle AI", 1000)    
 alive.start()
 
+#Creates the Queue for characters to take control of the controls
+atb_queue = []
+atb_queue_maxsize = 3
+
 while (True):
 
     if (keyboard.is_pressed('8')):
         battle_toggle = True
+        #Update the party names in the dictionary
 
     while (battle_toggle):
         #Run battle method
         time.sleep(10)
         #num += 1
         #print(num)
+        party()
 
         if (keyboard.is_pressed('9')):
             battle_toggle = False
