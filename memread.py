@@ -65,27 +65,62 @@ e6_mp_max = e6_mp + 0x00000002
 #Store Party HP to an array for iteration
 party_hp = [[p1_hp, p1_hp_max],[p2_hp, p2_hp_max],[p3_hp, p3_hp_max]]
 
-for i in range (0, len(party_hp)):
-    party_hp[i] = [game.read_int(party_hp[i][0]), game.read_int(party_hp[i][1])]
+#for i in range (0, len(party_hp)):
+#    party_hp[i] = [game.read_int(party_hp[i][0]), game.read_int(party_hp[i][1])]
 
 #Store Party MP to an array for iteration
 party_mp = [[p1_mp, p1_mp_max],[p2_mp, p2_mp_max],[p3_mp, p3_mp_max]]
 
-for i in range (0, len(party_mp)):
-    party_mp[i] = [game.read_short(party_mp[i][0]), game.read_short(party_mp[i][1])]
+#for i in range (0, len(party_mp)):
+#    party_mp[i] = [game.read_short(party_mp[i][0]), game.read_short(party_mp[i][1])]
 
 #store Enemy HP to an array for iteration
 enemy_hp = [[e1_hp, e1_hp_max],[e2_hp, e2_hp_max],[e3_hp, e3_hp_max],[e4_hp, e4_hp_max],[e5_hp, e5_hp_max],[e6_hp, e6_hp_max]]
 
-for i in range (0, len(enemy_hp)):
-    enemy_hp[i] = [game.read_int(enemy_hp[i][0]), game.read_int(enemy_hp[i][1])]
+#for i in range (0, len(enemy_hp)):
+#    enemy_hp[i] = [game.read_int(enemy_hp[i][0]), game.read_int(enemy_hp[i][1])]
 
 #store Enemy MP to an array for iteration
 enemy_mp = [[e1_mp, e1_mp_max],[e2_mp, e2_mp_max],[e3_mp, e3_mp_max],[e4_mp, e4_mp_max],[e5_mp, e5_mp_max],[e6_mp, e6_mp_max]]
 
-for i in range (0, len(enemy_mp)):
-    enemy_mp[i] = [game.read_short(enemy_mp[i][0]), game.read_short(enemy_mp[i][1])]
+#for i in range (0, len(enemy_mp)):
+#    enemy_mp[i] = [game.read_short(enemy_mp[i][0]), game.read_short(enemy_mp[i][1])]
 
+def char_alive(id):
+    """
+    Checks whether a party member is alive.
+    """
+    if (party_hp[id][0] > 0):
+        return True
+    return False
+
+def party_alive():
+    """
+    Checks whether there is at least one party member alive in battle.
+    """
+    for i in range (0, len(party_hp)):
+        if char_alive(i) == True:
+            return True
+    return False
+
+def enemy_alive(id):
+    """
+    Checks whether a specified enemy is alive.
+    """
+    if (enemy_hp[id][0] > 0):
+        return True
+    return False
+
+def enemies_alive():
+    """
+    Checks whether there is at least one enemy alive in battle.
+    """
+    for i in range (0, len(enemy_hp)):
+        if enemy_alive(i) == True:
+            return True
+        return False
+
+'''
 while True:
     #p1_hp = game.base_address + 0x005AB108
     #party_hp[0][0] = game.read_int(p1_hp)
@@ -120,3 +155,4 @@ while True:
     break
     #print("_" * 20)
     #time.sleep(3)
+'''

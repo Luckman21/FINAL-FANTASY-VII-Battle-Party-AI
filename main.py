@@ -12,6 +12,7 @@ import time
 from random import randint
 from datascrape import *
 from typer import *
+from memread import *
 
 battle_toggle = False
 num = 0
@@ -36,6 +37,18 @@ class KillSwitch(threading.Thread):
         #quit()
         os._exit(1)
 
+def temp_battle_method():
+    move = randint(0,100)
+
+    if (move >= 0 and move < 50):
+        Attack()
+    elif (move >= 50 and move < 75):
+        Magic()
+    elif (move >= 75 and move < 90):
+        Summon(1)
+    elif (move >= 90):
+        Item(1)
+
 def Player(name): #TODO: Implement
     party_names.get(name)
 
@@ -57,12 +70,13 @@ while (True):
         battle_toggle = True
         #Update the party names in the dictionary
 
-    while (battle_toggle):
+    while (battle_toggle or (party_alive() and enemies_alive())):
         #Run battle method
         time.sleep(10)
+        temp_battle_method()
         #num += 1
         #print(num)
-        party()
+        #party()
 
         if (keyboard.is_pressed('9')):
             battle_toggle = False
