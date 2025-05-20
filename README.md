@@ -69,6 +69,7 @@ Some helpful resources I found along the way!
 - [Extract Text From Images in Python (OCR)](https://youtu.be/PY_N1XdFp4w?si=VLq-9ABWQJEfXxbV "YouTube Tutorial Link")
 - [Basic Writing and Formatting Syntax for GitHub README](https://docs.github.com/en/get-started/writing-on-github/getting-started-with-writing-and-formatting-on-github/basic-writing-and-formatting-syntax, "Link to GitHub Guide")
 - [Writing GitHub README](https://medium.com/analytics-vidhya/writing-github-readme-e593f278a796 "Web Tutorial Link")
+- [Using Cheat Engine to extract data from FFVII Steam Edition](https://www.youtube.com/watch?app=desktop&v=8puZTOOWlqA "Link to YouTube Video")
 
 ***
 
