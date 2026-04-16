@@ -4,14 +4,14 @@ FINAL FANTASY VII AI Battles
 
 Check out the README for more information
 """
-
+#TODO: Remove class, redundant
 #Useful resource for this part https://youtu.be/PY_N1XdFp4w?si=VLq-9ABWQJEfXxbV
 
 import pymem
-import PIL
+#import PIL
 import pyautogui
-import pytesseract
-import pyscreenshot
+#import pytesseract
+#import pyscreenshot
 import time
 from menu_elements import *
 
@@ -73,41 +73,12 @@ def name_format(text):
 
 def party(): #TODO: Find values in memory that hold these values and read them
     """
-    Returns a string containing party member names.  Takes 2 screenshots (in case the name gets "greyed out"
-    by UI), compares which string is longer (theoretically the longer string should be the one with all 3 names)
-    and returns the output.  This method makes reading names more consistient and accurate.
+    Returns a string containing party member names.  Reads names from game memory.
     """
 
-    myconfig = r"--psm 4 --oem 3"
-
-    #Party Names
-    #Left, Up, Right, Down
-    pyautogui.keyDown('|')
-    name_window1 = pyscreenshot.grab(bbox=(200, 1150, 600, 1450))
-    pyautogui.keyUp('|')
-    inverted_image1 = PIL.ImageOps.invert(name_window1)
-    #inverted_image1.save('test.png')
-    text1 = pytesseract.image_to_string(inverted_image1, config=myconfig)
-
-    pyautogui.keyDown('|')
-    name_window2 = pyscreenshot.grab(bbox=(200, 1150, 600, 1450))
-    pyautogui.keyUp('|')
-    inverted_image2 = PIL.ImageOps.invert(name_window2)
-    #inverted_image2.save('test2.png')
-    text2 = pytesseract.image_to_string(inverted_image2, config=myconfig)
-
-    #Compare which text is longer; this will usually result in all names being included (greyed out names are not read as well and may be missed)
-    if (len(text1) >= len(text2)):
-        names = text1
-    else:
-        names = text2
-
-    #Seperate names from text, put in an array
-    names = name_format(names)
-
     #Add party names to the hashtable
-    for i in range (0, len(names)):
-        party_names.update({i+1:names[i]})
+    #for i in range (0, len(names)):
+        #party_names.update({i+1:names[i]})
 
 def HP():
     """
