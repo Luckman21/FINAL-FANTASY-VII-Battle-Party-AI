@@ -1,59 +1,96 @@
 #Luckman21
-
+from dataclasses import dataclass, field
+from typing import Optional
 from memread import *
+from game_info import *
 
-status_effects = {
-    0:"Dead",
-    1:"NearDeath",
-    2:"Sleep",
-    3:"Poison",
-    4:"Sadness",
-    5:"Fury",
-    6:"Confusion",
-    7:"Silence",
-    8:"Haste",
-    9:"Slow",
-    10:"Stop",
-    11:"Frog",
-    12:"Small",
-    13:"SlowNumb",
-    14:"Petrify",
-    15:"Regen",
-    16:"Barrier",
-    17:"MBarrier",
-    18:"Reflect",
-    19:"Dual",
-    20:"Shield",
-    21:"DeathSentence",
-    22:"Berserk",
-    23:"Peerless",
-    24:"Paralyze",
-    25:"Darkness"
-}
+@dataclass
+class BattleUnit:
+    name: str
+    party_index: int
+    level: int
+    curr_hp: int
+    hp_total: int
+    curr_mp: int
+    mp_total: int
+    status: int
+    atb: int
 
-DISABLE = ["Dead", "Sleep", "Stop", "Petrify", "Paralyze"]
-CONTROL_LOSS = ["Confusion", "Berserk"]
-DANGER =["NearDeath", "Poison", "SlowNumb", "Dual", "DeathSentence"]
-BUFFS = ["Haste", "Regen", "Barrier", "MBarrier", "Reflect", "Shield", "Berserk", "Peerless"]
-DEBUFFS = ["Sleep", "Poison", "Confusion", "Silence", "Slow", "Stop", "Frog", "Small", "SlowNumb", "Petrify", "Paralyze", "Darkness"]
-MOOD = ["Sadness", "Fury", "Berserk"]
-
-def char_alive(id):
-    """
-    Checks whether a party member is alive.
-    """
-    if (read_hp(party_hp[id][0]) > 0):
+    def unit_alive(self) -> bool:
+        """
+        Checks if the BattleUnit is alive.
+        """
+        if (self.curr_hp == 0 and (self.status & (1 << status_effects.get("Dead")))):
+            return False
         return True
-    return False
+    
+    def unit_ready(self) -> bool:
+        """
+        Determines if a unit can act (ATB bar is full).
+        """
+        if (self.unit_alive() == False):
+            return False
+        
+        # Cannot act despite full ATB since unit is disabled
+        for effect in DISABLE:
+            if (self.status & (1 << status_effects.get(effect))):
+                return False
 
-def party_alive():
-    """
-    Checks whether there is at least one party member alive in battle.
-    """
-    for i in range (0, len(party_hp)):
-        if char_alive(i) == True:
+        if (self.atb == ATB_MAX):
             return True
-    return False
+        return False
+
+@dataclass
+class Stats():
+    # Character Stats
+    exp: int
+    str: int
+    dex: int
+    vit: int
+    mag: int
+    spr: int
+    lck: int
+    att: int
+    dfn: int
+    mat: int
+    mdf: int
+
+@dataclass
+class Character(BattleUnit):
+    stats: Stats
+    limit: int
+    limit_level: int
+    mood: int
+
+    #TODO: Add materia and equipment data once located
+
+    def limit_available(self) -> bool:
+        if (self.limit == LIMIT_MAX):
+            return True
+        return False
+
+@dataclass
+class Party():
+    party_size: int
+    p1: Character
+    p2: Optional[Character] = None
+    p3: Optional[Character] = None
+
+    @property
+    def members(self) -> list[Character]:
+        """
+        Returns a list containing the current party members.  Party can have 1-3 members depending on what point of the game the player is in.
+        """
+        return [member for member in (self.p1, self.p2, self.p3) if member is not None]
+
+    def party_alive(self) -> bool:
+        """
+        Checks whether there is at least one party member alive in battle.
+        """
+        for member in self.members:
+            if (member.unit_alive() == True):
+                return True
+        return False
 
 def enemy_alive(id):
     """
@@ -71,28 +108,3 @@ def enemies_alive():
         if enemy_alive(i) == True:
             return True
         return False
-
-def status_to_vector(status_address):
-    """
-    Converts the status integer value into an array of vectors to show which statuses are in effect.
-    """
-    return [(status_address >> i) & 1 for i in range (32)]
-
-def active_status(status_addresss):
-    """
-    Maps status vector to status names to represent which statues are applied and currently active.
-
-    e.g.
-    {
-        ...
-        "Sleep":1,
-        "Poison":0,
-        "Sadness":1,
-        ...
-    }
-    """
-    vec = status_to_vector(status_address=status_addresss)
-
-    return {
-        name: vec[i] for i, name in status_effects.items()
-    }

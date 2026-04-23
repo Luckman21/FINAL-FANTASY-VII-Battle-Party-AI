@@ -4,7 +4,7 @@ FINAL FANTASY VII AI Battles
 
 Check out the README for more information
 """
-#TODO: Remove class, redundant
+#TODO: Remove class when determined safe to do so, redundant
 #Useful resource for this part https://youtu.be/PY_N1XdFp4w?si=VLq-9ABWQJEfXxbV
 
 import pymem
@@ -13,7 +13,7 @@ import pyautogui
 #import pytesseract
 #import pyscreenshot
 import time
-from menu_elements import *
+from game_info import *
 
 game = pymem.Pymem("ff7_en.exe")
 

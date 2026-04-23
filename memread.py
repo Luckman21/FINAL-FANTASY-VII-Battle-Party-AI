@@ -16,20 +16,6 @@ import pymem
 
 game = pymem.Pymem("ff7_en.exe")
 
-#Stat offsets from base stat address
-stat_offset = {
-    "STR":0,
-    "DEX":1,
-    "VIT":2,
-    "MAG":3,
-    "SPR":4,
-    "LCK":5,
-    "ATT":6,
-    "DEF":8,
-    "MAT":10,
-    "MDF":12
-}
-
 #Read Party HP Values (4 bytes)
 p1_hp = game.base_address + 0x005AB108
 p1_hp_max = p1_hp + 0x00000004
