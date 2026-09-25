@@ -13,6 +13,7 @@ Character HP MAX (4 bytes)
 '''
 
 import pymem
+from game_info import stat_offset
 
 game = pymem.Pymem("ff7_en.exe")
 
@@ -155,40 +156,3 @@ def hp_stat_printer(char_type, char):
             print(curr_hp , "|" , max_hp, round(curr_hp * 100 / max_hp),"%")
         elif ((curr_hp == 0) & (max_hp > 0)):
             print(curr_hp , "|" , max_hp, "0 %")
-
-'''
-while True:
-    #p1_hp = game.base_address + 0x005AB108
-    #party_hp[0][0] = game.read_int(p1_hp)
-
-    print("Party HP\n________________")
-    for i in party_hp:
-        if ((i[0] != 0) & (i[1] > 0)):
-            print(i[0] , "|" , i[1], round(i[0] * 100 / i[1]),"%")
-        elif ((i[0] == 0) & (i[1] > 0)):
-            print(i[0] , "|" , i[1], "0 %")
-
-    print("\n\nParty MP\n________________")
-    for i in party_mp:
-        if ((i[0] != 0) & (i[1] > 0)):
-            print(i[0] , "|" , i[1], round(i[0] * 100 / i[1]),"%")
-        elif ((i[0] == 0) & (i[1] > 0)):
-            print(i[0] , "|" , i[1], "0 %")
-
-    print("\n\nEnemy HP\n________________")
-    for i in enemy_hp:
-        if ((i[0] != 0) & (i[1] > 0)):
-            print(i[0] , "|" , i[1], round(i[0] * 100 / i[1]),"%")
-        elif ((i[0] == 0) & (i[1] > 0)):
-            print(i[0] , "|" , i[1], "0 %")
-    
-    print("\n\nEnemy MP\n________________")
-    for i in enemy_mp:
-        if ((i[0] != 0) & (i[1] > 0)):
-            print(i[0] , "|" , i[1], round(i[0] * 100 / i[1]),"%")
-        elif ((i[0] == 0) & (i[1] > 0)):
-            print(i[0] , "|" , i[1], "0 %")
-    break
-    #print("_" * 20)
-    #time.sleep(3)
-'''
