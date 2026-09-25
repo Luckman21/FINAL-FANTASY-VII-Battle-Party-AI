@@ -111,6 +111,22 @@ BUFFS = ["Haste", "Regen", "Barrier", "MBarrier", "Reflect", "Shield", "Berserk"
 DEBUFFS = ["Sleep", "Poison", "Confusion", "Silence", "Slow", "Stop", "Frog", "Small", "SlowNumb", "Petrify", "Paralyze", "Darkness"]
 MOOD = ["Sadness", "Fury", "Berserk"]
 
+# Field IDs for each character
+char_ids = {
+    0x00:"Cloud",
+    0x01:"Barret",
+    0x02:"Tifa",
+    0x03:"Aerith",
+    0x04:"Red XIII",
+    0x05:"Yuffie",
+    0x06:"Cait Sith",
+    0x07:"Vincent",
+    0x08:"Cid",
+    0x09:"Young Cloud",
+    0x0A:"Sephiroth",
+    0x0B:"Chocobo"
+}
+
 #For testing
 #curr_summons = ["Neo Bahamut", "Phoenix", "Kujata", "Shiva", "Bahamut", "Choco/Mog", "Ramuh", "Titan", "Alexander"]
 #curr_eskill = ["Frog Song", "L4 Suicide", "Magic Hammer", "Big Guard", "Flame Thrower", "Matra Magic", "Bad Breath", "Beta", "Aqualung", "Trine", "Death Sentence"]
