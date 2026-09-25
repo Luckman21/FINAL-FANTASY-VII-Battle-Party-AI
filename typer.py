@@ -47,6 +47,26 @@ def rArrow():
     pyautogui.keyUp('d')
     time.sleep(0.1)
 
+def moveArrows(move_list):
+    """
+    Create a custom move for unique cursor actions.
+    move_list = list[moves]
+    moves = ["direction", num_inputs_repeated]
+    """
+    for move in move_list:
+        if move[0] == "up":
+            for i in range(0, move[1]):
+                uArrow()
+        elif move[0] == "down":
+            for i in range(0, move[1]):
+                dArrow()
+        elif move[0] == "left":
+            for i in range(0, move[1]):
+                lArrow()
+        elif move[0] == "right":
+            for i in range(0, move[1]):
+                rArrow()
+
 #Sleep for 3 seconds
 #time.sleep(3)
 
